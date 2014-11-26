@@ -1,0 +1,17 @@
+{
+    "contents" : "#   Script for Movie Analysis\n#   * * * Created by Vincent A. Saulys\n#   * * * B.Eng Student At McGill University\n#   For the Kaggle Movie Sentiment Analysis Contest\n\nrm(list = ls())  # clear workspace\n\ntrain <- read.delim(file=\"train.tsv\", stringsAsFactors=FALSE)\n#test <- read.delim(file=\"test.tsv\", stringsAsFactors=FALSE)\n\n#source('makeshift_funcs.R') # For my own functions, wasn't working so its commented out\nlibrary(caret)  # For model training\nlibrary(tm) # For Text Mining\nlibrary(SnowballC) # For certain advanced Text Mining\nlibrary(plyr)\n\n\nclean_up <- function(df) {\n  library(tm)\n  corp <- Corpus(DataframeSource(df))\n  \n  \n  corp <- tm_map(corp, content_transformer(tolower))\n  corp <- tm_map(corp, removePunctuation)\n  corp <- tm_map(corp, removeNumbers)\n  corp <- tm_map(corp, removeWords, stopwords(\"english\"))\n  corp <- tm_map(corp, stemDocument)\n  corp <- tm_map(corp, stripWhitespace)\n  \n  return(corp)\n}\n\n\n# Make train's Sentiment rating into factor of five levels from 0 to 4\ntrain$Sentiment <- as.factor(train$Sentiment)\n\n# Splitting up the data set depending on the different sentiment ratings\n# I'm theorizing a Kmeans cluster will be found \n# Whichever a given text is will be determined by the closest kmeans\nzero <- train[train$Sentiment==0,]\none <- train[train$Sentiment==1,]\ntwo <- train[train$Sentiment==2,]\nthree <- train[train$Sentiment==3,]\nfour <- train[train$Sentiment==4,]\n\nmyframes <- list(zero, one, two, three, four)\n\ncorpi_train <- lapply(myframes, clean_up) \n",
+    "created" : 1416971624811.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "37459082",
+    "id" : "7DE8B365",
+    "lastKnownWriteTime" : 1416974708,
+    "path" : "~/Documents/workspace/Kaggle_Projects/Sentiment_Analysis/main_script.R",
+    "project_path" : "main_script.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}

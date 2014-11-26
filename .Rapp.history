@@ -1,0 +1,46 @@
+# Data Load#
+raw_data <- read.csv('household_power_consumption.txt',header=TRUE,sep=";")#
+raw_data$Global_active_power <- as.numeric( as.character(raw_data$Global_active_power) )#
+raw_data$Date <- as.Date(raw_data$Date, format="%d/%m/%Y")#
+data <- subset(raw_data, raw_data$Date == "2007-02-01" | raw_data$Date == "2007-02-02")#
+#
+# Set up TD variable to account for time#
+data$TD <- paste(data$Date, data$Time, sep=' ')#
+data$TD <- strptime(data$TD, "%Y-%m-%d %H:%M:%S")#
+#
+plot.new()    # Begin by creating a new plot#
+#
+par(mfrow=c(2,2))#
+#
+# Plot Uno (Repeat from Plot One)#
+plot(data$TD, data$Global_active_power, pch='.', xlab=" ", ylab="Global Active Power (kilowatts)", cex.lab=0.5, cex.axis=0.5)      #
+lines(data$TD, data$Global_active_power)#
+#
+# Plot Dos#
+plot(data$TD, data$Voltage, pch='.', cex.lab=0.5, xlab="datetime", ylab="Voltage", cex.axis=0.5)      #
+lines(data$TD, data$Voltage)#
+#
+# Plot Tres (Repeat from Plot Three)#
+plot(data$TD, data$Sub_metering_1, pch='.', cex.axis=0.75, ann=FALSE)      #
+lines(data$TD, data$Sub_metering_1)#
+points(data$TD, data$Sub_metering_2, pch='.', col='red', cex.axis=0.75, ann=FALSE)      #
+lines(data$TD, data$Sub_metering_2, col='red')#
+points(data$TD, data$Sub_metering_3, pch='.', col='blue', cex.axis=0.75, ann=FALSE)      #
+lines(data$TD, data$Sub_metering_3, col='blue')#
+par(legend('topright', c("Sub_metering_1", "Sub_metering_2","Sub_metering_3"), lty=c(1,1), col=c('black', 'red', 'blue'), cex=0.5))#
+title(cex.lab=0.5, xlab=" ", ylab="Energy Sub Metering")#
+#
+# Plot Cuatros#
+plot(data$TD, data$Global_reactive_power, pch='.', cex.lab=0.5, xlab="datetime", ylab="Global_reactive_power", cex.axis=0.5)      #
+lines(data$TD, data$Global_reactive_power)#
+#
+dev.copy(png, file = "geyserplot.png", width=504, height=504) #
+dev.off()
+source("/Users/VASaulys/Documents/workspace/R/Exploratory-Data-Analysis_Lab-One_Coursera/plot4.R")
+ls()
+??read.delim
+ls
+ls
+read.delim(train.tsv,header=TRUE,stringsAsFactors=FALSE)
+read.delim(file="train.tsv",header=TRUE,stringsAsFactors=FALSE)
+train <- read.delim(file="train.tsv",header=TRUE,stringsAsFactors=FALSE)
