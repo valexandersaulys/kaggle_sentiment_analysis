@@ -6,7 +6,7 @@
 rm(list = ls())  # clear workspace
 
 set <- read.delim(file="train.tsv", stringsAsFactors=FALSE)
-#test <- read.delim(file="test.tsv", stringsAsFactors=FALSE)
+
 #set <- set[1:1600,]
 
 library(caret)  # For model training & other useful functions
@@ -28,8 +28,21 @@ container <- create_container(matrix=dm,  # This will take a long time to comput
                               )
 
 SVM <- train_model(container,"SVM")  # MAXENT not working
+
 # returns a data.frame of predicted codes and probabilities for the specificied algorithm
 SVM_CLASSIFY <- classify_model(container,SVM)  
 
 analytics <- create_analytics(container,SVM_CLASSIFY)
 analytics
+
+
+test <- read.delim(file="test.tsv", stringsAsFactors=FALSE)
+dt <- create_matrix(test$Phrase, removeStopwords=FALSE,originalMatrix=dm)
+predSize <- length(test)
+predictionContainer <- create_container(dt, labels=rep(0,predSize), 
+                                        testSize=1:predSize, 
+                                        virgin=FALSE)
+
+ 
+test_classify <- classify_model(container_test,SVM)
+
